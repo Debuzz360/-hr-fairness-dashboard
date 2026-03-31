@@ -1,0 +1,12 @@
+Classifier,Technique,SPD_Gender,F1_Score,SPD_Delta,F1_Delta
+Logistic Regression,Baseline,-0.0369,0.7902,0.0,0.0
+Logistic Regression,Reweighting (Pre),-0.0433,0.7864,-0.0064,-0.0038
+Logistic Regression,ThresholdOptimizer (Post),0.0091,0.8449,0.0278,0.0547
+Random Forest,Baseline,-0.0716,0.8457,0.0,0.0
+Random Forest,Reweighting (Pre),-0.0716,0.8571,0.0,0.0114
+Random Forest,ThresholdOptimizer (Post),-0.0433,0.8415,0.0283,-0.0042
+XGBoost,Baseline,-0.0839,0.8603,0.0,0.0
+XGBoost,Reweighting (Pre),-0.0908,0.8652,-0.0069,0.0048
+XGBoost,ThresholdOptimizer (Post),-0.0684,0.8324,0.0155,-0.0279
+Logistic Regression,ExponentiatedGradient (In),-0.0187,N/A,0.0182,N/A
+Random Forest,ExponentiatedGradient (In),-0.0791,N/A,-0.0075,N/A

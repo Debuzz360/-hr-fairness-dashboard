@@ -22,7 +22,7 @@ post = timeline[timeline["Mitigation"]]
 bridge = timeline.iloc[2:4]
 layout = dict(PLOTLY_LAYOUT)
 
-def line_chart(y_col, y_title, y_range, h_val, h_label):
+def line_chart(y_col, y_title, y_range, h_val, h_label, chart_title=""):
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=pre["Period"],  y=pre[y_col],
         mode="lines+markers", name="Pre-mitigation",
@@ -36,6 +36,7 @@ def line_chart(y_col, y_title, y_range, h_val, h_label):
     fig.add_hline(y=h_val, line_dash="dot", line_color=RED,
                   annotation_text=h_label, annotation_font_color=RED)
     l = dict(layout); l.update(height=340, yaxis_title=y_title,
+        title=chart_title, title_font_size=13,
         legend=dict(bgcolor="#FFFFFF", bordercolor="#E2E8F0", borderwidth=1))
     if y_range: l["yaxis"] = dict(range=y_range, gridcolor="#E2E8F0")
     fig.update_layout(**l)
@@ -43,15 +44,15 @@ def line_chart(y_col, y_title, y_range, h_val, h_label):
 
 st.markdown("<div class='ac-section'>Gender Fairness Trend (SPD)</div>", unsafe_allow_html=True)
 st.caption("Negative SPD = female candidates disadvantaged. Values closer to 0 are fairer.")
-st.plotly_chart(line_chart("Gender_SPD","SPD",None,-0.05,"Fairness threshold (−0.05)"), use_container_width=True)
+st.plotly_chart(line_chart("Gender_SPD","SPD",None,-0.05,"Fairness threshold (−0.05)","Gender SPD Trend: Pre vs Post Mitigation"), use_container_width=True)
 
 st.markdown("<div class='ac-section'>Education Fairness Trend (DIR)</div>", unsafe_allow_html=True)
 st.caption("DIR ≥ 0.8 required for UK legal compliance.")
-st.plotly_chart(line_chart("Education_DIR","DIR",[0.5,1.0],0.8,"Legal threshold (0.8)"), use_container_width=True)
+st.plotly_chart(line_chart("Education_DIR","DIR",[0.5,1.0],0.8,"Legal threshold (0.8)","Education DIR Trend: Pre vs Post Mitigation"), use_container_width=True)
 
 st.markdown("<div class='ac-section'>Model Accuracy Trend (F1)</div>", unsafe_allow_html=True)
 st.caption("Fairness improvements should not catastrophically reduce accuracy.")
-st.plotly_chart(line_chart("F1_Score","F1 Score",[0.7,1.0],0.8,"Minimum acceptable F1"), use_container_width=True)
+st.plotly_chart(line_chart("F1_Score","F1 Score",[0.7,1.0],0.8,"Minimum acceptable F1","Model Accuracy (F1) Trend: Pre vs Post Mitigation"), use_container_width=True)
 
 st.markdown("""<div class="ac-info-box">
 📈 <strong>Key observations:</strong> Gender fairness improves after mitigation in Q4 2024. Education DIR is 

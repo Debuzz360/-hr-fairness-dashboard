@@ -37,7 +37,7 @@ sorted_df = df.sort_values(model_col, ascending=True).reset_index(drop=True)
 colours = [RED if f in PROXY else INDIGO for f in sorted_df["Feature"]]
 
 layout = dict(PLOTLY_LAYOUT)
-layout.update(height=max(380, len(sorted_df)*42), margin=dict(l=20,r=60,t=20,b=20), showlegend=False)
+layout.update(title='', height=max(380, len(sorted_df)*42), margin=dict(l=20,r=60,t=20,b=20), showlegend=False)
 
 fig = go.Figure(go.Bar(
     x=sorted_df[model_col], y=sorted_df["Feature"], orientation="h",

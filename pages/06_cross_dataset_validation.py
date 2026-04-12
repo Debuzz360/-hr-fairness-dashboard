@@ -34,7 +34,7 @@ cross = pd.DataFrame({
     "Dataset": ["Primary"]*3 + ["Secondary"]*3,
     "SPD_Gender": [-0.082,-0.091,-0.087, -0.078,-0.085,-0.081]
 })
-layout = dict(PLOTLY_LAYOUT); layout.update(height=380)
+layout = dict(PLOTLY_LAYOUT); layout.update(title='', height=380)
 fig = go.Figure()
 for dataset, colour in [("Primary", INDIGO), ("Secondary", AMBER)]:
     d = cross[cross["Dataset"]==dataset]

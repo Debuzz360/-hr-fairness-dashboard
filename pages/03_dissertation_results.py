@@ -45,7 +45,7 @@ sel = st.multiselect("Filter techniques", techniques, default=techniques)
 filtered = df[df["Technique"].isin(sel)] if sel else df
 
 layout = dict(PLOTLY_LAYOUT)
-layout.update(height=400)
+layout.update(title='', height=400)
 
 fig = px.bar(filtered, x="Classifier", y="SPD_Gender", color="Technique", barmode="group",
              color_discrete_sequence=[INDIGO, GREEN, AMBER, RED])

@@ -45,7 +45,7 @@ with c3:
 clf = st.selectbox("Select classifier", df["Classifier"].unique().tolist())
 filtered = df[df["Classifier"]==clf].reset_index(drop=True)
 
-layout = dict(PLOTLY_LAYOUT); layout.update(height=360)
+layout = dict(PLOTLY_LAYOUT); layout.update(title='', height=360)
 
 spd_colours = [GREEN if abs(float(v))<=0.05 else (AMBER if abs(float(v))<=0.1 else RED)
                for v in filtered["SPD_Gender"]]

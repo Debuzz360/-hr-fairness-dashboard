@@ -179,7 +179,11 @@ else:
                 st.dataframe(df2.head(5), use_container_width=True)
 
         st.markdown("<div class='ac-section'>Configure Audit</div>", unsafe_allow_html=True)
-        shared_cols = list(set(df1.columns) & set(df2.columns))
+        shared_cols = sorted(list(set(df1.columns.tolist()) & set(df2.columns.tolist())))
+
+        if not shared_cols:
+            st.error("No shared columns found between the two datasets.")
+            st.stop()
 
         c1, c2, c3 = st.columns(3)
         with c1: outcome_col = st.selectbox("Hire outcome column", shared_cols, key="ba_out")
@@ -188,9 +192,13 @@ else:
                                     ["None"] + shared_cols, key="ba_pred")
         with c3: group_col = st.selectbox("Protected attribute", shared_cols, key="ba_grp")
 
-        all_vals = list(set(list(df1[group_col].dropna().unique()) +
-                            list(df2[group_col].dropna().unique())))
-        priv_val = st.selectbox("Privileged group value", all_vals, key="ba_priv")
+        try:
+            vals1 = [str(x) for x in df1[group_col].dropna().unique()]
+            vals2 = [str(x) for x in df2[group_col].dropna().unique()]
+            all_vals = sorted(list(set(vals1 + vals2)))
+        except Exception:
+            all_vals = []
+        priv_val = st.selectbox("Privileged group value", all_vals, key="ba_priv") if all_vals else None
 
         if st.button("▶ Run Cross-Dataset Audit", type="primary"):
             pred = pred_col if pred_col != "None" else None

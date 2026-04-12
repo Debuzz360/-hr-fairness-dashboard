@@ -179,50 +179,83 @@ else:
                 st.dataframe(df2.head(5), use_container_width=True)
 
         st.markdown("<div class='ac-section'>Configure Audit</div>", unsafe_allow_html=True)
-        shared_cols = sorted(list(set(df1.columns.tolist()) & set(df2.columns.tolist())))
+        st.info("The two datasets may have different column names. Select the matching columns for each dataset separately.")
 
-        if not shared_cols:
-            st.error("No shared columns found between the two datasets.")
-            st.stop()
+        cols1 = df1.columns.tolist()
+        cols2 = df2.columns.tolist()
 
-        c1, c2, c3 = st.columns(3)
-        with c1: outcome_col = st.selectbox("Hire outcome column", shared_cols, key="ba_out")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("**Primary Dataset Columns**")
+            outcome_col1 = st.selectbox("Hire outcome column", cols1, key="ba_out1",
+                index=cols1.index("HiringDecision") if "HiringDecision" in cols1 else 0)
+            group_col1   = st.selectbox("Protected attribute", cols1, key="ba_grp1",
+                index=cols1.index("Gender") if "Gender" in cols1 else 0)
         with c2:
-            pred_col = st.selectbox("Prediction column (optional)",
-                                    ["None"] + shared_cols, key="ba_pred")
-        with c3: group_col = st.selectbox("Protected attribute", shared_cols, key="ba_grp")
+            st.markdown("**Secondary Dataset Columns**")
+            outcome_col2 = st.selectbox("Hire outcome column", cols2, key="ba_out2",
+                index=cols2.index("Suitability(target)") if "Suitability(target)" in cols2 else 0)
+            group_col2   = st.selectbox("Protected attribute", cols2, key="ba_grp2",
+                index=cols2.index("Gender(feature,sensitive)") if "Gender(feature,sensitive)" in cols2 else 0)
 
-        try:
-            vals1 = [str(x) for x in df1[group_col].dropna().unique()]
-            vals2 = [str(x) for x in df2[group_col].dropna().unique()]
-            all_vals = sorted(list(set(vals1 + vals2)))
-        except Exception:
-            all_vals = []
-        priv_val = st.selectbox("Privileged group value", all_vals, key="ba_priv") if all_vals else None
+        pred_col = "None"
+
+        c3, c4 = st.columns(2)
+        with c3:
+            vals1 = sorted([str(x) for x in df1[group_col1].dropna().unique()])
+            priv_val1 = st.selectbox("Privileged value (primary)", vals1, key="ba_priv1",
+                index=vals1.index("1") if "1" in vals1 else 0)
+        with c4:
+            vals2 = sorted([str(x) for x in df2[group_col2].dropna().unique()])
+            priv_val2 = st.selectbox("Privileged value (secondary)", vals2, key="ba_priv2",
+                index=vals2.index("1") if "1" in vals2 else 0)
 
         if st.button("▶ Run Cross-Dataset Audit", type="primary"):
-            pred = pred_col if pred_col != "None" else None
-            r1 = full_audit(df1, outcome_col, pred, group_col, priv_val)
-            r2 = full_audit(df2, outcome_col, pred, group_col, priv_val)
+            # Convert privileged values back to original dtype
+            try:
+                pv1 = int(priv_val1)
+            except Exception:
+                pv1 = priv_val1
+            try:
+                pv2 = int(priv_val2)
+            except Exception:
+                pv2 = priv_val2
+            # Also try float match for secondary dataset
+            try:
+                pv2_f = float(priv_val2)
+            except Exception:
+                pv2_f = pv2
+            # Normalise secondary outcome to 0/1 if needed
+            df2_norm = df2.copy()
+            unique_vals = df2_norm[outcome_col2].dropna().unique()
+            if set(unique_vals) != {0, 1}:
+                max_val = df2_norm[outcome_col2].max()
+                df2_norm[outcome_col2] = (df2_norm[outcome_col2] == max_val).astype(int)
+            # Normalise secondary group col
+            if df2_norm[group_col2].dtype == object:
+                df2_norm[group_col2] = df2_norm[group_col2].str.strip()
+
+            r1 = full_audit(df1, outcome_col1, None, group_col1, pv1)
+            r2 = full_audit(df2_norm, outcome_col2, None, group_col2, pv2)
 
             st.markdown("<div class='ac-section'>Side-by-Side Results</div>", unsafe_allow_html=True)
 
             metrics = list(r1.keys())
             c1, c2 = st.columns(2)
             with c1:
-                st.markdown("##### Primary Dataset")
+                st.markdown(f"##### Primary Dataset ({outcome_col1} / {group_col1})")
                 for m in metrics:
                     v = r1[m]
                     flag = flag_dir(v) if m=="DIR" else flag_spd(v) if m=="SPD" else flag_other(v)
-                    st.metric(m, f"{v:.4f}" if v is not None else "N/A",
-                              delta=flag, delta_color="off")
+                    disp = f"{v:.4f}" if (v is not None and not (isinstance(v, float) and v != v)) else "N/A"
+                    st.metric(m, disp, delta=flag if disp != "N/A" else "N/A", delta_color="off")
             with c2:
-                st.markdown("##### Secondary Dataset")
+                st.markdown(f"##### Secondary Dataset ({outcome_col2} / {group_col2})")
                 for m in metrics:
                     v = r2[m]
                     flag = flag_dir(v) if m=="DIR" else flag_spd(v) if m=="SPD" else flag_other(v)
-                    st.metric(m, f"{v:.4f}" if v is not None else "N/A",
-                              delta=flag, delta_color="off")
+                    disp = f"{v:.4f}" if (v is not None and not (isinstance(v, float) and v != v)) else "N/A"
+                    st.metric(m, disp, delta=flag if disp != "N/A" else "N/A", delta_color="off")
 
             st.divider()
 

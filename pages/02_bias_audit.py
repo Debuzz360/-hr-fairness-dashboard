@@ -262,7 +262,9 @@ else:
             # Comparison bar chart for all metrics
             st.markdown("<div class='ac-section'>Metric Comparison Chart</div>", unsafe_allow_html=True)
 
-            layout = dict(PLOTLY_LAYOUT); layout.update(height=380, barmode="group")
+            layout = dict(PLOTLY_LAYOUT); layout.update(height=380, barmode="group",
+                title="Fairness Metrics: Primary vs Secondary Dataset",
+                title_font_size=14)
             fig = go.Figure()
             fig.add_trace(go.Bar(name="Primary", x=metrics,
                 y=[r1[m] if r1[m] is not None else 0 for m in metrics],

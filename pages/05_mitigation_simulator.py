@@ -76,7 +76,7 @@ for i, (_, row) in enumerate(filtered.iterrows()):
         name=row["Technique"]))
 fig3.add_vline(x=0.05, line_dash="dash", line_color=RED,
                annotation_text="|SPD| threshold", annotation_font_color=RED)
-layout3 = dict(PLOTLY_LAYOUT); layout3.update(height=380, showlegend=False,
+layout3 = dict(PLOTLY_LAYOUT); layout3.update(title='', height=380, showlegend=False,
     xaxis_title="|SPD| (lower = fairer)", yaxis_title="F1 Score (higher = better)")
 fig3.update_layout(**layout3)
 st.plotly_chart(fig3, use_container_width=True)

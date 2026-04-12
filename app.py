@@ -74,7 +74,7 @@ with col_g:
         }
     ))
     layout = dict(PLOTLY_LAYOUT)
-    layout.update(height=280, margin=dict(l=30, r=30, t=50, b=10))
+    layout.update(title='', height=280, margin=dict(l=30, r=30, t=50, b=10))
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True)
     st.caption("Score above 70 = high risk. Red threshold at 80 = critical intervention required.")

@@ -17,7 +17,6 @@ progress_data = [
     ("Mitigation Testing", "✅ Complete",    100),
     ("Streamlit App",      "✅ Complete",    100),
     ("Chapter 5 Write-up", "🔄 In Progress", 60),
-    ("Viva Preparation",   "🔄 In Progress", 40),
 ]
 for phase, status, pct in progress_data:
     c1, c2, c3 = st.columns([2, 2, 6])

@@ -68,6 +68,53 @@ with st.expander("View complete table"):
         if c in d.columns: d[c] = d[c].apply(lambda x: f"{float(x):.4f}")
     st.dataframe(d, use_container_width=True, hide_index=True)
 
+st.markdown("<div class='ac-section'>Figure 4.8: Gender Fairness Metrics Heatmap — Baseline Results</div>", unsafe_allow_html=True)
+
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+import numpy as np
+
+metrics_hm = ['SPD', 'EOD', 'EqOdds', 'FNRP', 'DIR']
+classifiers_hm = ['Logistic\nRegression', 'Random\nForest', 'XGBoost']
+
+data_hm = np.array([
+    [-0.0369, -0.0716, -0.0839],
+    [-0.0807, -0.1241, -0.1368],
+    [ 0.0807,  0.1241,  0.1368],
+    [ 0.0807,  0.1241,  0.1368],
+    [ 0.9057,  0.7674,  0.7435],
+])
+
+import seaborn as sns
+fig_hm, ax_hm = plt.subplots(figsize=(10, 7))
+cmap_hm = sns.diverging_palette(10, 130, as_cmap=True)
+sns.heatmap(data_hm, ax=ax_hm, annot=True, fmt='.4f', cmap=cmap_hm,
+    center=0, vmin=-0.20, vmax=0.95, linewidths=0.8, linecolor='white',
+    xticklabels=classifiers_hm, yticklabels=metrics_hm,
+    cbar_kws={'label': 'Metric Value', 'shrink': 0.75},
+    annot_kws={'size': 12, 'weight': 'bold'})
+ax_hm.axhline(y=4, color='navy', linewidth=2, linestyle='--', alpha=0.8)
+ax_hm.set_title(
+    'Figure 4.8: Gender Fairness Metrics Heatmap — Baseline Results\nFemale vs Male | Logistic Regression, Random Forest, XGBoost',
+    fontsize=12, fontweight='bold', pad=15)
+ax_hm.set_xlabel('Classifier', fontsize=11, labelpad=10)
+ax_hm.set_ylabel('Fairness Metric', fontsize=11, labelpad=10)
+ax_hm.tick_params(axis='x', rotation=0, labelsize=10)
+ax_hm.tick_params(axis='y', rotation=0, labelsize=10)
+fig_hm.text(0.5, -0.02,
+    'Source: Lawal Adeniyi (2026). Dashed line separates DIR from other metrics.',
+    ha='center', fontsize=9, style='italic', color='gray')
+plt.tight_layout()
+st.pyplot(fig_hm, use_container_width=True)
+plt.close()
+
+st.markdown("""<div class="ac-info-box">
+♿ <strong>Accessibility note:</strong> The heatmap uses a red-green colour scale. Red cells indicate
+negative fairness values (disadvantage to unprivileged group). Green cells indicate positive values
+(above benchmark). All numerical values are displayed directly in each cell.
+</div>""", unsafe_allow_html=True)
+
 st.markdown("<div class='ac-section'>Key Findings</div>", unsafe_allow_html=True)
 c1, c2 = st.columns(2)
 with c1:

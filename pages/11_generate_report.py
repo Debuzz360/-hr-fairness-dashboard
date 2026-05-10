@@ -35,7 +35,7 @@ if st.button("📄 Generate Report", type="primary"):
 
 This report presents findings from an algorithmic fairness audit of ML models used in HR recruitment
 screening, conducted in accordance with the UK Equality Act 2010. The four-fifths rule (DIR ≥ 0.8)
-is applied as the primary legal compliance threshold. Three classifiers were evaluated: Logistic
+is applied as the primary practical benchmark. Three classifiers were evaluated: Logistic
 Regression, Random Forest, and XGBoost. All exhibited consistent negative SPD across protected groups.
 
 """
@@ -47,7 +47,7 @@ Regression, Random Forest, and XGBoost. All exhibited consistent negative SPD ac
 | Random Forest | -0.0716 | 0.817 | 0.700 | 84.6% |
 | XGBoost | -0.0839 | 0.807 | 0.727 | 86.0% |
 
-Education bias is the most severe, with DIR as low as 0.536 — well below the 0.8 legal threshold.\n"""
+Education bias is the most severe, with DIR as low as 0.536 — well below the 0.80 four-fifths rule practical benchmark.\n"""
 
     if "Proxy Variables" in sections:
         r += """\n---\n## Proxy Variable Analysis (SHAP)\n

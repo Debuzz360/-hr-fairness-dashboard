@@ -92,5 +92,5 @@ with st.expander("Full Results Table"):
 st.markdown("""<div class="ac-info-box">
 <strong>Key finding:</strong> ThresholdOptimizer achieved the greatest SPD improvement across all classifiers,
 directly answering RQ3. For Logistic Regression it produced a positive SPD (0.0091) — confirming
-post-processing techniques can achieve legal compliance in UK financial services recruitment systems.
+post-processing techniques can achieve full compliance with the four-fifths rule benchmark in UK financial services recruitment systems.
 </div>""", unsafe_allow_html=True)

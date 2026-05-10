@@ -47,7 +47,7 @@ st.caption("Negative SPD = female candidates disadvantaged. Values closer to 0 a
 st.plotly_chart(line_chart("Gender_SPD","SPD",None,-0.05,"Fairness threshold (−0.05)","Gender SPD Trend: Pre vs Post Mitigation"), use_container_width=True)
 
 st.markdown("<div class='ac-section'>Education Fairness Trend (DIR)</div>", unsafe_allow_html=True)
-st.caption("DIR ≥ 0.8 required for UK legal compliance.")
+st.caption("DIR ≥ 0.8 four-fifths rule practical benchmark.")
 st.plotly_chart(line_chart("Education_DIR","DIR",[0.5,1.0],0.8,"Legal threshold (0.8)","Education DIR Trend: Pre vs Post Mitigation"), use_container_width=True)
 
 st.markdown("<div class='ac-section'>Model Accuracy Trend (F1)</div>", unsafe_allow_html=True)

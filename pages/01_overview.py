@@ -39,10 +39,10 @@ metrics = {
     "Full Name": ["Statistical Parity Difference", "Disparate Impact Ratio",
                   "Equal Opportunity Difference", "Positive Predictive Value Parity",
                   "False Positive Rate Parity"],
-    "Ideal Value": ["0", "1.0 (legal ≥ 0.8)", "0", "0", "0"],
+    "Ideal Value": ["0", "1.0 (benchmark ≥ 0.8)", "0", "0", "0"],
     "What it captures": [
         "Overall selection rate gap",
-        "Ratio of selection rates — legal indicator",
+        "Ratio of selection rates — four-fifths rule benchmark",
         "Whether qualified candidates are equally hired",
         "Whether hire predictions are equally reliable",
         "Whether rejection errors fall equally"

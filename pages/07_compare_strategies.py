@@ -13,11 +13,11 @@ with c1:
     st.markdown("<div class='ac-section'>Strategy 1 — Baseline (No Mitigation)</div>", unsafe_allow_html=True)
     st.metric("Selection Rate","31%")
     st.metric("Gender SPD","-0.0839",help="Negative: female candidates selected less often")
-    st.metric("Education DIR","0.727",help="Below 0.8 legal threshold")
+    st.metric("Education DIR","0.727",help="Below 0.80 four-fifths rule benchmark")
     st.metric("XGBoost F1","86.0%")
     st.markdown("""<div class="ac-danger-box">
     ❌ Gender bias (SPD = −0.0839)<br>
-    ❌ Education bias (DIR = 0.727, below legal threshold)<br>
+    ❌ Education bias (DIR = 0.727, below the 0.80 four-fifths rule benchmark)<br>
     ❌ RecruitmentStrategy_1 dominates SHAP predictions<br>
     ❌ All models fail DIR ≥ 0.8 for at least one group
     </div>""", unsafe_allow_html=True)
@@ -30,7 +30,7 @@ with c2:
         st.metric("Gender SPD","-0.0689",delta="Improved")
         st.metric("Education DIR","0.795",delta="+0.068")
         st.metric("F1 Score","84.7%",delta="-1.0%", delta_color="inverse")
-        st.markdown("""<div class="ac-info-box">✅ <strong>Recommended:</strong> Best DIR compliance. Closest to the 0.8 legal threshold.</div>""", unsafe_allow_html=True)
+        st.markdown("""<div class="ac-info-box">✅ <strong>Recommended:</strong> Best DIR compliance. Closest to the 0.80 four-fifths rule benchmark.</div>""", unsafe_allow_html=True)
         st.progress(0.795, text="DIR toward 0.8 threshold: 99.4%")
     elif mit == "ExponentiatedGradient":
         st.metric("Selection Rate","31%",delta="No change")

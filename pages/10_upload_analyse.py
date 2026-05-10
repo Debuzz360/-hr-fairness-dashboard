@@ -68,7 +68,7 @@ if mode == "Single dataset":
             with c4: st.metric("DIR", f"{res['dir']:.4f}", delta=flag_dir(res['dir']), delta_color="off")
 
             if res['dir'] < 0.8:
-                st.markdown("""<div class="ac-danger-box">🚨 <strong>Adverse Impact Detected:</strong> DIR below 0.8 legal threshold (UK Equality Act 2010).</div>""", unsafe_allow_html=True)
+                st.markdown("""<div class="ac-danger-box">🚨 <strong>Adverse Impact Detected:</strong> DIR below 0.80 four-fifths rule benchmark (EEOC four-fifths rule, used as practical benchmark).</div>""", unsafe_allow_html=True)
             elif res['spd'] is not None and abs(res['spd']) > 0.05:
                 st.markdown("""<div class="ac-warn-box">⚠️ <strong>Gender disparity detected:</strong> SPD exceeds the 0.05 fairness threshold.</div>""", unsafe_allow_html=True)
             else:
@@ -192,7 +192,7 @@ else:
             fig_dir.add_trace(go.Bar(name="Secondary", x=["DIR"], y=[r2['dir']],
                 marker_color=AMBER, text=[f"{r2['dir']:.4f}"], textposition="outside"))
             fig_dir.add_hline(y=0.8, line_dash="dot", line_color=RED,
-                              annotation_text="Legal threshold (0.8)", annotation_font_color=RED)
+                              annotation_text="Four-fifths rule benchmark (0.8)", annotation_font_color=RED)
             layout2 = dict(PLOTLY_LAYOUT); layout2.update(height=320, barmode="group",
                 yaxis_title="DIR", yaxis_range=[0, 1.1], xaxis_title="")
             fig_dir.update_layout(**layout2)

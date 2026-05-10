@@ -82,7 +82,7 @@ with col_g:
 with col_a:
     st.markdown("<div class='ac-section'>Live Alerts</div>", unsafe_allow_html=True)
     alerts = [
-        ("danger",  "Education bias: DIR = 0.536 — below 0.8 legal threshold"),
+        ("danger",  "Education bias: DIR = 0.536 — below the 0.80 four-fifths rule benchmark"),
         ("warn",    "RecruitmentStrategy_1 identified as dominant proxy feature"),
         ("ok",      "XGBoost performance stable: F1 = 86.0%"),
     ]

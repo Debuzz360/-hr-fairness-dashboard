@@ -72,7 +72,7 @@ def display_metrics(res):
             val = f"{v:.4f}" if v is not None else "N/A"
             flag = flag_dir(v) if m == "DIR" else flag_spd(v) if m == "SPD" else flag_other(v)
             st.metric(m, val, delta=flag, delta_color="off",
-                      help="DIR ≥ 0.8 required for UK legal compliance" if m == "DIR" else
+                      help="DIR ≥ 0.8 four-fifths rule practical benchmark" if m == "DIR" else
                            "Ideal value: 0" )
 
 def results_table(res):

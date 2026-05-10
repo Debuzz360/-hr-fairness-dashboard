@@ -76,7 +76,15 @@ with c1:
     unprivileged candidates were systematically less likely to be selected at baseline.
     </div>""", unsafe_allow_html=True)
 with c2:
+    # Heatmap accessibility note added below
     st.markdown("""<div class="ac-info-box">
     <strong>ThresholdOptimizer</strong> achieved the greatest SPD improvement, with Logistic Regression
     reaching a positive SPD (0.0091) — the unprivileged group slightly favoured post-mitigation.
     </div>""", unsafe_allow_html=True)
+
+st.markdown("""<div class="ac-info-box">
+♿ <strong>Accessibility note:</strong> The gender fairness metrics heatmap uses a red-green
+colour scale. If you have colour vision deficiency, please refer to the numerical values displayed
+in each cell directly. Red cells indicate negative fairness values (disadvantage to unprivileged
+group), green cells indicate positive values (above benchmark).
+</div>""", unsafe_allow_html=True)

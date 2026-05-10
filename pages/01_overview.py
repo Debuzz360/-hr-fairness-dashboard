@@ -11,12 +11,13 @@ st.title("📋 Overview & Research Framework")
 st.markdown("<div class='ac-section'>Research Progress</div>", unsafe_allow_html=True)
 
 progress_data = [
-    ("Data Collection",    "✅ Complete",    100),
-    ("Model Training",     "✅ Complete",    100),
-    ("Fairness Analysis",  "✅ Complete",    100),
-    ("Mitigation Testing", "✅ Complete",    100),
-    ("Streamlit App",      "✅ Complete",    100),
-    ("Chapter 5 Write-up", "🔄 In Progress", 60),
+    ("Data Collection",        "✅ Complete", 100),
+    ("Model Training",         "✅ Complete", 100),
+    ("Fairness Analysis",      "✅ Complete", 100),
+    ("Mitigation Testing",     "✅ Complete", 100),
+    ("Streamlit App",          "✅ Complete", 100),
+    ("Chapter 5 & 6 Write-up", "✅ Complete", 100),
+    ("Dissertation Submission","✅ Complete", 100),
 ]
 for phase, status, pct in progress_data:
     c1, c2, c3 = st.columns([2, 2, 6])
@@ -29,8 +30,20 @@ st.markdown("""
 This dissertation examines **algorithmic bias in machine learning systems used for HR recruitment**
 within UK financial services. The UK Equality Act 2010 prohibits discrimination on protected
 characteristics including gender, race/ethnicity, and age. A Disparate Impact Ratio (DIR) below
-**0.8** signals potential legal exposure — the so-called *four-fifths rule*.
+**0.8** signals potential adverse impact — the so-called *four-fifths rule*, drawn from the US EEOC
+Uniform Guidelines on Employee Selection Procedures and used throughout as a **practical benchmark**.
 """)
+
+st.markdown("""<div class="ac-warn-box">
+⚠️ <strong>Legal Note:</strong> The 0.80 DIR threshold is a practical benchmark drawn from the US EEOC
+four-fifths rule — it is <strong>not a statutory threshold</strong> under the Equality Act 2010.
+Exceeding 0.80 does not automatically negate an indirect discrimination claim under Section 19.
+Organisations must also demonstrate that any potentially discriminatory practice is a proportionate
+means of achieving a legitimate aim. Additionally, the <strong>Data (Use and Access) Act 2025</strong>
+has reformed the UK automated decision-making framework, replacing the original UK GDPR Article 22
+with updated provisions on "significant decisions" taken solely by automated means. HR teams should
+ensure compliance with these latest requirements.
+</div>""", unsafe_allow_html=True)
 
 st.markdown("<div class='ac-section'>Five-Metric Fairness Framework</div>", unsafe_allow_html=True)
 st.markdown("Five complementary metrics were used — no single metric captures the full picture of fairness.")
@@ -59,7 +72,7 @@ layers = {
                "Human-in-the-loop review, explainability, appeals"],
     "Key Tools": ["Reweighting, ExponentiatedGradient, ThresholdOptimizer, SHAP",
                   "Bias auditing schedules, diverse training data mandates",
-                  "DIR ≥ 0.8 threshold, data minimisation, right to explanation",
+                  "DIR ≥ 0.8 four-fifths rule benchmark, data minimisation, right to explanation",
                   "Recruiter review triggers, candidate transparency, audit trails"]
 }
 st.dataframe(pd.DataFrame(layers), use_container_width=True, hide_index=True)

@@ -33,7 +33,16 @@ def flag_spd(v):
 
 def flag_dir(v):
     if v is None: return "N/A"
-    return "✅ Compliant" if v >= 0.8 else ("⚠️ Near threshold" if v >= 0.7 else "🚨 Legal risk")
+    if v >= 0.8: return "✅ Above benchmark"
+    elif v >= 0.7: return "⚠️ Near benchmark"
+    else: return "🚨 Adverse impact risk"
+
+def sample_size_warning(n):
+    if n < 50:
+        return "🚨 Sample size too small (< 50) — DIR calculations may be unreliable."
+    elif n < 100:
+        return "⚠️ Small sample size (< 100) — interpret DIR results with caution."
+    return None
 
 # ── Upload mode selector ───────────────────────────────────────────────────────
 mode = st.radio("Upload mode", ["Single dataset", "Two datasets (cross-dataset validation)"],
@@ -61,6 +70,11 @@ if mode == "Single dataset":
         if st.button("▶ Run Analysis", type="primary"):
             res = compute_metrics(df, outcome_col, group_col, priv_val)
 
+            # Sample size warning
+            warn = sample_size_warning(len(df))
+            if warn:
+                st.warning(warn)
+
             c1, c2, c3, c4 = st.columns(4)
             with c1: st.metric("Records", f"{res['total']:,}")
             with c2: st.metric("Hire Rate", f"{res['hire_rate']:.1%}")
@@ -68,7 +82,7 @@ if mode == "Single dataset":
             with c4: st.metric("DIR", f"{res['dir']:.4f}", delta=flag_dir(res['dir']), delta_color="off")
 
             if res['dir'] < 0.8:
-                st.markdown("""<div class="ac-danger-box">🚨 <strong>Adverse Impact Detected:</strong> DIR below 0.80 four-fifths rule benchmark (EEOC four-fifths rule, used as practical benchmark).</div>""", unsafe_allow_html=True)
+                st.markdown("""<div class="ac-danger-box">🚨 <strong>Adverse Impact Risk Detected:</strong> DIR below 0.80 four-fifths rule benchmark. Note: this is a practical indicator, not a statutory UK threshold. Under Section 19 of the Equality Act 2010, organisations must also demonstrate any disadvantaging practice is a proportionate means of achieving a legitimate aim.</div>""", unsafe_allow_html=True)
             elif res['spd'] is not None and abs(res['spd']) > 0.05:
                 st.markdown("""<div class="ac-warn-box">⚠️ <strong>Gender disparity detected:</strong> SPD exceeds the 0.05 fairness threshold.</div>""", unsafe_allow_html=True)
             else:
@@ -103,6 +117,25 @@ if mode == "Single dataset":
             "EducationLevel":[2,4,2],"HiringDecision":[1,1,0]}),
             use_container_width=True, hide_index=True)
         st.caption("Gender: 1=Male (privileged), 0=Female. HiringDecision: 1=hired, 0=not hired.")
+        # CSV template download
+        import io
+        template = pd.DataFrame({
+            "Age": [26, 39, 48, 35, 42],
+            "Gender": [1, 1, 0, 0, 1],
+            "EducationLevel": [2, 4, 2, 3, 1],
+            "ExperienceYears": [3, 8, 5, 6, 2],
+            "InterviewScore": [72, 85, 68, 79, 55],
+            "SkillScore": [80, 90, 75, 82, 60],
+            "HiringDecision": [1, 1, 0, 1, 0]
+        })
+        csv_template = template.to_csv(index=False).encode()
+        st.download_button(
+            "⬇️ Download Example CSV Template",
+            csv_template,
+            "fairhire_template.csv",
+            "text/csv",
+            help="Download this template to see the expected column format"
+        )
 
 # ── TWO DATASET MODE ───────────────────────────────────────────────────────────
 else:
@@ -192,7 +225,7 @@ else:
             fig_dir.add_trace(go.Bar(name="Secondary", x=["DIR"], y=[r2['dir']],
                 marker_color=AMBER, text=[f"{r2['dir']:.4f}"], textposition="outside"))
             fig_dir.add_hline(y=0.8, line_dash="dot", line_color=RED,
-                              annotation_text="Four-fifths rule benchmark (0.8)", annotation_font_color=RED)
+                              annotation_text="Legal threshold (0.8)", annotation_font_color=RED)
             layout2 = dict(PLOTLY_LAYOUT); layout2.update(height=320, barmode="group",
                 yaxis_title="DIR", yaxis_range=[0, 1.1], xaxis_title="")
             fig_dir.update_layout(**layout2)

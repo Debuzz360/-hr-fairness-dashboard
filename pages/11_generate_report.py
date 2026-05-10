@@ -34,9 +34,13 @@ if st.button("📄 Generate Report", type="primary"):
 ## Executive Summary
 
 This report presents findings from an algorithmic fairness audit of ML models used in HR recruitment
-screening, conducted in accordance with the UK Equality Act 2010. The four-fifths rule (DIR ≥ 0.8)
-is applied as the primary practical benchmark. Three classifiers were evaluated: Logistic
-Regression, Random Forest, and XGBoost. All exhibited consistent negative SPD across protected groups.
+screening. The four-fifths rule (DIR ≥ 0.8) is applied as a practical benchmark drawn from the US
+EEOC Uniform Guidelines on Employee Selection Procedures. It is not a statutory threshold under the
+Equality Act 2010 — organisations must also demonstrate that any potentially disadvantaging practice
+is a proportionate means of achieving a legitimate aim under Section 19. The Data (Use and Access)
+Act 2025 (DUAA) has also updated the UK automated decision-making framework. Three classifiers were
+evaluated: Logistic Regression, Random Forest, and XGBoost. All exhibited consistent negative SPD
+across protected groups.
 
 """
     if "Fairness Metrics" in sections:
